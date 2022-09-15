@@ -1,9 +1,11 @@
-from multiprocessing import context
-import re
 from django.shortcuts import render
 from wishlist.models import BarangWishlist
+from django.http import HttpResponse
+from django.core import serializers
 
 # Create your views here.
+
+
 def show_wishlist(request):
     data_barang_wishlist = BarangWishlist.objects.all()
     context = {
@@ -11,4 +13,19 @@ def show_wishlist(request):
         'nama': 'Tarreq Maulana'
     }
     return render(request,'wishlist.html', context)
-    
+
+def getXML(request):
+    data = BarangWishlist.objects.all()
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml") 
+
+def getJSON(request):
+    data = BarangWishlist.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def getIdBasedXML(request, id):
+    data = BarangWishlist.objects.filter(pk = id)
+    return HttpResponse(serializers.serialize("xml", data), content_type ="application/xml")
+
+def getIdBasedJSON(request, id):
+    data = BarangWishlist.objects.filter(pk = id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
