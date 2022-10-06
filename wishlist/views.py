@@ -1,3 +1,5 @@
+from multiprocessing import context
+import re
 from urllib import response
 from django.shortcuts import render
 from wishlist.models import BarangWishlist
@@ -24,6 +26,32 @@ def show_wishlist(request):
         'last_login': request.COOKIES['last_login'],
     }
     return render(request,'wishlist.html', context)
+
+@login_required(login_url='/wishlist/login/')
+def show_ajax_wishlist(request):
+    data_barang_wishlist = BarangWishlist.objects.all()
+    context = {
+        'nama': 'Muhammad Tarreq Maulana',
+        'last_login': request.COOKIES['last_login'],
+    }
+    return render(request, 'wishlist_ajax.html', context)
+
+def add_wishlist_ajax(request):
+    data_barang_wishlist = BarangWishlist.objects.all()
+    context = {
+        'nama': 'Muhammad Tarreq Maulana',
+        'last_login': request.COOKIES['last_login'],
+    }
+    return render(request, 'add_wishlist.html', context)
+
+def add_wishlist(request):
+    data_barang_wishlist = BarangWishlist.objects.all()
+    context = {
+        'list_barang': data_barang_wishlist,
+        'nama': 'Muhammad Tarreq Maulana',
+        'last_login': request.COOKIES['last_login'],
+    }
+    return render(request, 'add_wishlist.html', context)
 
 def getXML(request):
     data = BarangWishlist.objects.all()
